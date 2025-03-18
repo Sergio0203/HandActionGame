@@ -12,6 +12,7 @@ struct Poc_IAApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .ignoresSafeArea()
         }
     }
 }
