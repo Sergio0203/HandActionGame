@@ -9,7 +9,8 @@ import ARKit
 
 class ARCoordinator: NSObject, ARSessionDelegate {
     var frameCount: Int = 0
-    var frameThreshFold: Int = 1
+    var frameThreshFold: Int = 60
+    var sampleCount: Int = 0
     var queue = [MLMultiArray]()
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         frameCount += 1
@@ -17,14 +18,24 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             return
         }
         
-        getHands(from: frame)
+        guard let hands = getHands(from: frame) else { return }
         
-        
+        for (pose, chirality) in hands {
+            guard chirality == .right else { return }
+            queue.append(pose)
+            queue = Array(queue.suffix(frameThreshFold))
+            sampleCount += 1
+            if sampleCount % 30 == 0  {
+                print("predizendo...")
+                ClassifierService.shared.classify(poses: queue)
+            }
+        }
     }
     
-    private func getHands(from frame: ARFrame) -> (MLMultiArray, VNChirality)? {
+    private func getHands(from frame: ARFrame) -> [(MLMultiArray, VNChirality)]? {
         let handPoseRequest = VNDetectHumanHandPoseRequest()
-        handPoseRequest.maximumHandCount = 1
+        var result: [(MLMultiArray, VNChirality)] = []
+        handPoseRequest.maximumHandCount = 2
         let pixelBuffer = frame.capturedImage
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
         do {
@@ -32,20 +43,17 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         } catch {
             assertionFailure("Human Pose Request failed: \(error)")
         }
-        guard let detectedHandPose = handPoseRequest.results?.first else { return nil }
+        guard let detectedHandPoses = handPoseRequest.results else { return nil }
         
-        guard let arrayML = try? detectedHandPose.keypointsMultiArray() else { return nil }
-        let chirality = detectedHandPose.chirality
-    
-        switch chirality {
-        case .left:
-            print("left")
-        case .right:
-            print("right")
-        case .unknown:
-            print("unknow")
+        detectedHandPoses.forEach { hand in
+            do {
+                result.append((try hand.keypointsMultiArray(), hand.chirality))
+            }catch {
+                assertionFailure("Hand Pose Request failed: \(error)")
+            }
         }
-        return (arrayML, chirality)
+    
+        return result
     }
 }
 
