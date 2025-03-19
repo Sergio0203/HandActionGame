@@ -9,8 +9,12 @@ import ARKit
 import RealityKit
 import Vision
 struct ARViewContainer: UIViewRepresentable {
+    let arView = ARView(frame: .zero)
+    
     func makeUIView(context: Context) -> ARView {
-        let arView = ARView(frame: .zero)
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal, .vertical]
+        arView.session.run(configuration)
         arView.session.delegate = context.coordinator
         return arView
     }
@@ -19,6 +23,6 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func makeCoordinator() -> ARCoordinator {
-        return ARCoordinator()
+        return ARCoordinator(arView: arView)
     }
 }
