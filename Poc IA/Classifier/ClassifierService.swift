@@ -15,7 +15,7 @@ final class ClassifierService {
         let input = HandActionTrackInput(poses: poses)
         let prediction = try? model.prediction(input: input)
         guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return }
-        if confidence > 0.5 {
+        if confidence > 0.8 {
             print("\(label): \(confidence)")
         }
     }

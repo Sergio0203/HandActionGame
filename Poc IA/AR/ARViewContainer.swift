@@ -14,7 +14,8 @@ struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
-        arView.session.run(configuration)
+        configuration.environmentTexturing = .automatic
+//        arView.session.run(configuration)
         arView.session.delegate = context.coordinator
         return arView
     }
