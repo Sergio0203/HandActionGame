@@ -50,7 +50,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             sampleCounter += 1
             if queueSize == queue.count && sampleCounter % sampleCount == 0  {
                 print("predizendo...")
-                ClassifierService.shared.classify(poses: queue)
+                ClassifierService.shared.classifyAction(poses: queue)
             }
         }
     }

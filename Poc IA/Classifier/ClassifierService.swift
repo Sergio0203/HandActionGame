@@ -7,17 +7,20 @@
 import CoreML
 final class ClassifierService {
     static let shared = ClassifierService()
-    private let model = HandActionTrack()
+    
+    private let modelHandAction: HandActionTrack = try! HandActionTrack(configuration: MLModelConfiguration())
+    private let modelHandPose: HandPoseClassifier = try! HandPoseClassifier(configuration: MLModelConfiguration())
     private init() {}
     
-    func classify(poses: [MLMultiArray]) {
+    func classifyAction(poses: [MLMultiArray]) {
         let poses = MLMultiArray(concatenating: poses, axis: 0, dataType: .float32)
         let input = HandActionTrackInput(poses: poses)
-        let prediction = try? model.prediction(input: input)
+        let prediction = try? modelHandAction.prediction(input: input)
         guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return }
         if confidence > 0.8 {
             print("\(label): \(confidence)")
         }
     }
+    
+    func classifyPoses(pose: [MLMultiArray]) {}
 }
-
