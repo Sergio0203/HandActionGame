@@ -8,7 +8,7 @@
 import ARKit
 import RealityKit
 
-class ARCoordinator: NSObject, ARSessionDelegate {
+extension ContentViewModel: ARSessionDelegate {
     var frameCount: Int = 0
     var sampleCount: Int = 30
     var queueSize: Int = 30
@@ -16,14 +16,8 @@ class ARCoordinator: NSObject, ARSessionDelegate {
     var queue = [MLMultiArray]()
     var frame: ARFrame?
     var session: ARSession?
-    var arView: ARView?
     var points: [CGPoint] = []
     let sphereEntity = ModelEntity(mesh:  MeshResource.generateSphere(radius: 0.01), materials: [SimpleMaterial(color: .red, isMetallic: false)])
-    
-    
-    init(arView: ARView){
-        self.arView = arView
-    }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.frame = frame
@@ -67,6 +61,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         handPoseRequest.maximumHandCount = 2
         guard let frame else { return nil }
         let pixelBuffer = frame.capturedImage
+
         
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
         
@@ -78,7 +73,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         
         let cameraSize = CGSize(width: CVPixelBufferGetWidth(frame.capturedImage),
                                 height: CVPixelBufferGetHeight(frame.capturedImage))
-        
+
         guard let detectedHandPoses = handPoseRequest.results else { return nil }
         detectedHandPoses.forEach { hand in
             drawJoints(for: hand, cameraSize: cameraSize)
@@ -98,8 +93,9 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         let viewPort = UIScreen.main.bounds.size
         do {
             let joints = try hand.recognizedPoints(.all)
+            
+            
             for (_, joint) in joints {
-                joint
                 if joint.confidence > 0.3 {
                     let location = joint.location
                     points.append(.init(x: location.y * viewPort.width,
