@@ -145,7 +145,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             view.layer.name = "particle"
             arView?.addSubview(view)
         
-            
+
         }
     }
     
