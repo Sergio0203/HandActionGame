@@ -8,22 +8,26 @@ import SwiftUI
 import ARKit
 import RealityKit
 import Vision
+import Foundation
+
 struct ARViewContainer: UIViewRepresentable {
-    let arView = ARView(frame: .zero)
+    var delegate: ARSessionDelegate
+    
+    init(delegate: ARSessionDelegate) {
+        self.delegate = delegate
+    }
     
     func makeUIView(context: Context) -> ARView {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
         configuration.environmentTexturing = .automatic
-//        arView.session.run(configuration)
-        arView.session.delegate = context.coordinator
+        
+        let arView = ARView()
+        arView.session.run(configuration)
+        arView.session.delegate = delegate
         return arView
     }
     
     func updateUIView(_ uiView: ARView, context: Context) {
-    }
-    
-    func makeCoordinator() -> ARCoordinator {
-        return ARCoordinator(arView: arView)
     }
 }
