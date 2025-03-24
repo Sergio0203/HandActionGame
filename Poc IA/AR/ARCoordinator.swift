@@ -53,6 +53,12 @@ class ARCoordinator: NSObject, ARSessionDelegate {
                 ClassifierService.shared.classifyAction(poses: queue)
             }
         }
+        
+        //        for (pose, chirality) in hands where chirality == .left {
+        //            print("predizendo...")
+        //            ClassifierService.shared.classifyPoses(pose: pose)
+        //        }
+        
     }
     
     private func getHands() -> [(MLMultiArray, VNChirality)]? {
@@ -139,12 +145,12 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             let point = CGRect(x: point.x, y: point.y, width: 10 , height: 10)
             
             let view = UIView(frame: point)
-           
+            
             view.layer.cornerRadius = 5
             view.backgroundColor = .red
             view.layer.name = "particle"
             arView?.addSubview(view)
-        
+            
             
         }
     }
