@@ -30,9 +30,10 @@ extension ContentViewModel: ARSessionDelegate {
     
     private func sendToIa(hands: [HandModel]) {
         for hand in hands {
+            guard let pose = hand.getMLMultiArray() else { return }
+
             if hand.chirality == .right {
                 // Action Classify
-                guard let pose = hand.getMLMultiArray() else { return }
                 queue.append(pose)
                 queue = Array(queue.suffix(queueSize))
                 sampleCounter += 1
@@ -42,6 +43,7 @@ extension ContentViewModel: ARSessionDelegate {
                 }
             } else if hand.chirality == .left {
                 //Pose Classify
+                ClassifierService.shared.classifyPoses(pose: pose)
             }
         }
     }
