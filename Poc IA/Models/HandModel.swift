@@ -3,7 +3,7 @@ import Foundation
 enum HandChirality: String {
     case left
     case right
-    case unknow
+    case unknown
 }
 
 struct HandModel {
@@ -20,15 +20,34 @@ extension HandModel {
         case .right:
             chirality = .right
         case .unknown:
-            chirality = .unknow
+            chirality = .unknown
         }
         
         do {
-            for joint in try hand.recognizedPoints(.all) {
-                joints.append(JointModel(jointName: joint.key, jointValues: joint.value))
+            for joint in VNHumanHandPoseObservation.JointName.allCases {
+                joints.append(JointModel(jointCase: joint, jointValues: try hand.recognizedPoint(joint)))
             }
         } catch {
             assertionFailure("Impossible to identifie the joints")
+        }
+    }
+}
+
+extension HandModel: HandsML {
+    func getMLMultiArray() -> MLMultiArray? {
+        do {
+            let multiarray = try MLMultiArray(shape: [1, 3, 21], dataType: .double)
+            
+            for (index, joint) in joints.enumerated() {
+                multiarray[index] = .init(value: joint.x)
+                multiarray[index + 21] = .init(value: joint.y)
+                multiarray[index + 42] = .init(value: joint.confidence)
+            }
+            
+            return multiarray
+        } catch {
+            assertionFailure("Could Not get MLMultiArray")
+            return nil
         }
     }
 }

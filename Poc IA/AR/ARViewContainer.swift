@@ -12,19 +12,20 @@ import Foundation
 
 struct ARViewContainer: UIViewRepresentable {
     var delegate: ARSessionDelegate
-    
+    var arView = ARView()
+
     init(delegate: ARSessionDelegate) {
         self.delegate = delegate
     }
     
     func makeUIView(context: Context) -> ARView {
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = [.horizontal, .vertical]
-        configuration.environmentTexturing = .automatic
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        config.environmentTexturing = .automatic
         
-        let arView = ARView()
-        arView.session.run(configuration)
         arView.session.delegate = delegate
+        arView.session.run(config)
+        
         return arView
     }
     

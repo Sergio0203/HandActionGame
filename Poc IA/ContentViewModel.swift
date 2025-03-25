@@ -20,21 +20,24 @@ final class ContentViewModel: NSObject, ObservableObject {
     @Published var prediction: Prediction
     @Published var predictionConfidence: Float
     
-    var arView: ARViewContainer?
+
+    var frameCount: Int = 0
+    var sampleCount: Int = 30
+    var queueSize: Int = 30
+    var sampleCounter: Int = 0
+    var queue = [MLMultiArray]()
+    var points: [CGPoint] = []
+
+    var arContainer: ARViewContainer?
     let handsService: HandsDetector
-    
+
     
     init(handsService: HandsDetector = HandsService()) {
         self.prediction =  Prediction.none
         self.predictionConfidence = 0
-        arView = ARViewContainer(delegate: self)
         self.handsService = handsService
-    }
-}
+        super.init()
+        arContainer = ARViewContainer(delegate: self)
 
-extension ContentViewModel: ARSessionDelegate {
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-    
-        
     }
 }

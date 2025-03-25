@@ -8,3 +8,7 @@ import Vision
 protocol HandsDetector {
     func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel]
 }
+
+protocol HandsML {
+    func getMLMultiArray() -> MLMultiArray?
+}
