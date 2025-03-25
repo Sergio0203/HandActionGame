@@ -14,15 +14,10 @@ extension ContentViewModel: ARSessionDelegate {
         guard frameCount % 2 == 0 else {
             return
         }
-        
         refreshPointsInView()
-        
         let hands = handsService.detectHands(in: frame.capturedImage, numberOfHands: 2)
-        addParticles()
-        
+        getJointsLocation(for: hands)
         sendToIa(hands: hands)
-        
-        
     }
     
     private func refreshPointsInView(){
@@ -37,7 +32,8 @@ extension ContentViewModel: ARSessionDelegate {
         for hand in hands {
             if hand.chirality == .right {
                 // Action Classify
-                queue.append(hand.getMLMultiArray())
+                guard let pose = hand.getMLMultiArray() else { return }
+                queue.append(pose)
                 queue = Array(queue.suffix(queueSize))
                 sampleCounter += 1
                 if queueSize == queue.count && sampleCounter % sampleCount == 0  {
@@ -50,30 +46,24 @@ extension ContentViewModel: ARSessionDelegate {
         }
     }
     
-    private func drawJoints(for hand: HandModel) {
-        let chirality = hand.chirality
+    private func getJointsLocation(for hands: [HandModel]) {
         let viewPort = UIScreen.main.bounds.size
-        
-        let joints = hand.joints
-        
-        
-        for joint in joints {
-            if joint.confidence > 0.3 {
-                let location = joint.location
-                points.append(.init(x: location.y * viewPort.width,
-                                    y: location.x * viewPort.height))
+        for hand in hands {
+            for joint in hand.joints {
+                if joint.confidence > 0.3 {
+                    let location = joint.location
+                    points.append(.init(x: location.x * viewPort.width,
+                                        y: location.y * viewPort.height))
+                }
             }
         }
-        
-        
+        addParticles()
     }
-    
     
     private func addParticles(){
         for point in points{
             
             let point = CGRect(x: point.x, y: point.y, width: 10 , height: 10)
-            
             let view = UIView(frame: point)
             
             view.layer.cornerRadius = 5

@@ -10,5 +10,5 @@ protocol HandsDetector {
 }
 
 protocol HandsML {
-    func getMLMultiArray() -> MLMultiArray
+    func getMLMultiArray() -> MLMultiArray?
 }

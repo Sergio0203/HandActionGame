@@ -7,7 +7,7 @@ struct ContentView: View {
             ZStack {
                 vm.arContainer
                 VStack {
-                    predictionLabel
+//                    predictionLabel
                     Spacer()
                 }
             }
