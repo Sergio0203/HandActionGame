@@ -5,7 +5,7 @@ struct ContentView: View {
     @StateObject var vm = ContentViewModel()
     var body: some View {
             ZStack {
-                vm.arView
+                vm.arContainer
                 VStack {
                     predictionLabel
                     Spacer()

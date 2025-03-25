@@ -35,13 +35,17 @@ extension HandModel {
 
 extension HandModel: HandsML {
     func getMLMultiArray() -> MLMultiArray {
+        var multiarray = MLMultiArray()
         do {
-            var multiArray = try MLMultiArray(shape: [1, 3, 21], dataType: .float32)
+            multiarray = try MLMultiArray(shape: [1, 3, 21], dataType: .float32)
+            
             for (index, joint) in joints.enumerated() {
-                
+                multiarray.shape[0]
+
             }
         } catch {
             assertionFailure("Could Not get MLMultiArray")
         }
+        return multiarray
     }
 }

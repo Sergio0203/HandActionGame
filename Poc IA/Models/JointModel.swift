@@ -7,6 +7,9 @@ struct JointModel {
     var y: Double
     var confidence: Double
     var name: String
+    var location: CGPoint {
+        return CGPoint(x: x, y: y)
+    }
 }
 
 extension JointModel {
