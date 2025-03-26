@@ -14,7 +14,7 @@ extension JointModel {
     init(jointCase: VNHumanHandPoseObservation.JointName, jointValues: VNRecognizedPoint) {
         name = String(describing: jointCase)
         x = jointValues.y
-        y = jointValues.x        
+        y = jointValues.x
         confidence = Double(jointValues.confidence)
     }
 }

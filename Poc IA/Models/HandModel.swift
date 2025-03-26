@@ -39,8 +39,8 @@ extension HandModel: HandsML {
             let multiarray = try MLMultiArray(shape: [1, 3, 21], dataType: .double)
             
             for (index, joint) in joints.enumerated() {
-                multiarray[index] = .init(value: joint.x)
-                multiarray[index + 21] = .init(value: joint.y)
+                multiarray[index] = .init(value: joint.y)
+                multiarray[index + 21] = .init(value: joint.x)
                 multiarray[index + 42] = .init(value: joint.confidence)
             }
             

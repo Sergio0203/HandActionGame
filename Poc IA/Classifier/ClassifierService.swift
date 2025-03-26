@@ -12,23 +12,28 @@ final class ClassifierService {
     private let modelHandPose: HandPoseClassifier = try! HandPoseClassifier(configuration: MLModelConfiguration())
     private init() {}
     
-    func classifyAction(poses: [MLMultiArray]) {
+    func classifyAction(poses: [MLMultiArray]) -> (String, Double)? {
         let poses = MLMultiArray(concatenating: poses, axis: 0, dataType: .float32)
         let input = HandActionClassifierInput(poses: poses)
         let prediction = try? modelHandAction.prediction(input: input)
-        guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return }
+        guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return nil }
+        
         if confidence > 0.8 {
-            print("\(label): \(confidence)")
+            return (label, confidence)
         }
+        return nil
     }
     
-    func classifyPoses(pose: MLMultiArray) {
+    func classifyPoses(pose: MLMultiArray) -> (String, Double)? {
         let input = HandPoseClassifierInput(poses: pose)
         let prediction = try? modelHandPose.prediction(input: input)
-        guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return }
+        guard let label = prediction?.label, let confidence = prediction?.labelProbabilities[label] else { return nil }
         
         if confidence > 0.8 {
             print("\(label): \(confidence)")
+            return (label, confidence)
         }
+        
+        return nil
     }
 }

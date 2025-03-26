@@ -19,12 +19,11 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> ARView {
-        let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.horizontal, .vertical]
-        config.environmentTexturing = .automatic
-        
+      
+        let config = ARImageTrackingConfiguration()
         arView.session.delegate = delegate
         arView.session.run(config)
+        
         
         return arView
     }
@@ -32,3 +31,4 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: ARView, context: Context) {
     }
 }
+

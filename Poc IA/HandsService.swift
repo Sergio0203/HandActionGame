@@ -9,12 +9,13 @@
 
 import Vision
 struct HandsService: HandsDetector {
+    
     func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel] {
         var handsResult = [HandModel]()
         let handPoseRequest = VNDetectHumanHandPoseRequest()
         handPoseRequest.maximumHandCount = numberOfHands
         
-        let handler = VNImageRequestHandler(cvPixelBuffer: image, options: [:])
+        let handler = VNImageRequestHandler(cvPixelBuffer: image, orientation: .up, options: [:])
         
         do {
             try handler.perform([handPoseRequest])
