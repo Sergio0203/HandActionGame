@@ -40,7 +40,10 @@ final class ContentViewModel: NSObject, ObservableObject {
     var queue = [MLMultiArray]()
     @Published var points: [CGPoint] = []
     
-    var cameraContainer: CameraContainer?
+    @Published var currentFrame: CGImage?
+    var cameraManager: CameraManager?
+    
+    
     var arContainer: ARViewContainer?
     
     let handsService: HandsDetector
@@ -48,8 +51,21 @@ final class ContentViewModel: NSObject, ObservableObject {
     init(handsService: HandsDetector = HandsService()) {
         self.handsService = handsService
         super.init()
+        cameraManager = CameraManager(delegate: self)
         arContainer = ARViewContainer(delegate: self)
-        cameraContainer = CameraContainer(delegate: self)
+        Task {
+            await handleCameraPreviews()
+        }
+    }
+    
+    func handleCameraPreviews() async {
+        await cameraManager?.start()
+        guard let cameraManager else { return }
+        for await image in cameraManager.previewStream {
+            Task { @MainActor in
+                currentFrame = image.cgImage
+            }
+        }
     }
     
     func sendToIa(hands: [HandModel]) {
@@ -117,7 +133,7 @@ final class ContentViewModel: NSObject, ObservableObject {
         }
     }
     
-    func didGetFrames(frame: CVPixelBuffer) {
+    func didGetFrames(frame: CIImage) {
         let hands = handsService.detectHands(in: frame, numberOfHands: 2)
         if hands.isEmpty {
             removePointsFromView()

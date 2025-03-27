@@ -5,8 +5,9 @@
 //  Created by Sérgio César Lira Júnior on 24/03/25.
 //
 import Vision
+import CoreImage
 protocol HandsDetector {
-    func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel]
+    func detectHands(in image: CIImage, numberOfHands: Int) -> [HandModel]
 }
 
 protocol HandsML {

@@ -6,15 +6,22 @@
 //
 import AVFoundation
 import UIKit
+
 extension ContentViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        frameCount += 1
-        guard frameCount % 2 == 0 else {
-            return
-        }
-        self.resetLabels()
-        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        didGetFrames(frame: pixelBuffer)
-       
+    func captureOutput(
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
+    ) {
+        guard let pixelBuffer = sampleBuffer.imageBuffer else { return }
+        #if os(iOS)
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer).oriented(connection.isVideoMirrored ? .left : .right)
+        
+        #elseif os(macOS)
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        #endif
+        
+        didGetFrames(frame: ciImage)
+        self.cameraManager?.addToPreviewStream?(ciImage)
     }
 }

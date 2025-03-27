@@ -13,8 +13,8 @@ struct JointModel {
 extension JointModel {
     init(jointCase: VNHumanHandPoseObservation.JointName, jointValues: VNRecognizedPoint) {
         name = String(describing: jointCase)
-        x = jointValues.y
-        y = jointValues.x
+        x = jointValues.x
+        y = jointValues.y
         confidence = Double(jointValues.confidence)
     }
 }

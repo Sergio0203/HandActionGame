@@ -8,14 +8,15 @@
 
 
 import Vision
+import CoreImage
 struct HandsService: HandsDetector {
     
-    func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel] {
+    func detectHands(in image: CIImage, numberOfHands: Int) -> [HandModel] {
         var handsResult = [HandModel]()
         let handPoseRequest = VNDetectHumanHandPoseRequest()
         handPoseRequest.maximumHandCount = numberOfHands
         
-        let handler = VNImageRequestHandler(cvPixelBuffer: image, orientation: .up, options: [:])
+        let handler = VNImageRequestHandler(ciImage: image, orientation: .downMirrored, options: [:])
         
         do {
             try handler.perform([handPoseRequest])

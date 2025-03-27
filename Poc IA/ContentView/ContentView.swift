@@ -5,9 +5,7 @@ struct ContentView: View {
     @StateObject var vm = ContentViewModel()
     var body: some View {
             ZStack {
-                //vm.arContainer
-                vm.cameraContainer
-                joints
+                CameraView(image: $vm.currentFrame, points: $vm.points)
                 VStack {
                     predictionLabels
                         .padding(.top, 40)
@@ -24,16 +22,6 @@ struct ContentView: View {
         
         Text("Mäo esquerda: \(vm.leftPrediction)")
         Text("Confiança: \(vm.leftPredictionConfidence)")
-    }
-    
-    @ViewBuilder
-    private var joints: some View {
-        ForEach(vm.points, id: \.self) { point in
-            Circle()
-                .fill(Color.red)
-                .frame(width: 10)
-                .position(x: point.x, y: point.y)
-        }
     }
 }
 

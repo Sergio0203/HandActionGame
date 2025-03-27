@@ -16,7 +16,7 @@ extension ContentViewModel: ARSessionDelegate {
         }
         self.resetLabels()
         
-        didGetFrames(frame: frame.capturedImage)
+        //didGetFrames(frame: frame.capturedImage)
     }
     
 }
