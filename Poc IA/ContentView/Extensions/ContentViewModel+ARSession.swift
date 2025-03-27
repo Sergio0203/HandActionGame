@@ -14,6 +14,7 @@ extension ContentViewModel: ARSessionDelegate {
         guard frameCount % 2 == 0 else {
             return
         }
+        self.resetLabels()
         
         didGetFrames(frame: frame.capturedImage)
     }

@@ -5,8 +5,8 @@ struct ContentView: View {
     @StateObject var vm = ContentViewModel()
     var body: some View {
             ZStack {
-                vm.arContainer
-                //vm.cameraContainer
+                //vm.arContainer
+                vm.cameraContainer
                 joints
                 VStack {
                     predictionLabels
