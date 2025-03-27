@@ -16,6 +16,7 @@ struct CameraContainer: UIViewControllerRepresentable {
     init(delegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
         self.delegate = delegate
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = .resizeAspectFill
     }
     
     func makeUIViewController(context: Context) -> UIViewController {
@@ -45,7 +46,7 @@ struct CameraContainer: UIViewControllerRepresentable {
         
         //previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.frame = viewController.view.bounds
-        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.videoGravity = .resizeAspect
         viewController.view.layer.addSublayer(previewLayer)
         
         Task {

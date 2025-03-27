@@ -15,6 +15,20 @@ extension ContentViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
         self.resetLabels()
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         didGetFrames(frame: pixelBuffer)
+        for layer in cameraContainer!.previewLayer.sublayers! where layer.name == "Points" {
+            layer.removeFromSuperlayer()
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            for point in self.points {
+                let newPoint = cameraContainer?.previewLayer.convert(point, to: cameraContainer?.previewLayer)
+                let view = UIView(frame: .init(x: 0, y: 0, width: 5, height: 5))
+                view.backgroundColor = .blue
+                view.layer.name = "Points"
+                view.layer.position = newPoint!
+                self.cameraContainer?.previewLayer.addSublayer(view.layer)
+            }
+        }
        
     }
 }

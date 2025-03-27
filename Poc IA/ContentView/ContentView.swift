@@ -7,6 +7,7 @@ struct ContentView: View {
             ZStack {
                 //vm.arContainer
                 vm.cameraContainer
+            
                 joints
                 VStack {
                     predictionLabels
