@@ -17,27 +17,16 @@ struct CameraView: View {
                 if let image = image {
                     Image(decorative: image, scale: 1)
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: geometryProxy.size.width,
                                height: geometryProxy.size.height)
                         .border(.red, width: 2)
-                joints
                 } else {
                     ContentUnavailableView("No camera feed", systemImage: "xmark.circle.fill")
                         .frame(width: geometryProxy.size.width,
                                height: geometryProxy.size.height)
                 }
             }
-        }
-    }
-    
-    @ViewBuilder
-    private var joints: some View {
-        ForEach(points, id: \.self) { point in
-            Circle()
-                .fill(Color.red)
-                .frame(width: 5)
-                .position(x: point.x, y: point.y)
         }
     }
     
