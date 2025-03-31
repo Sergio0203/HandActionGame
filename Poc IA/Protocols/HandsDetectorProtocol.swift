@@ -5,10 +5,11 @@
 //  Created by Sérgio César Lira Júnior on 24/03/25.
 //
 import Vision
-protocol HandsDetector {
+
+protocol HandsDetectorProtocol {
     func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel]
 }
 
-protocol HandsML {
+protocol HandsMLProtocol {
     func getMLMultiArray() -> MLMultiArray?
 }

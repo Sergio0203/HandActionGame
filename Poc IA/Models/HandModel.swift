@@ -33,7 +33,7 @@ extension HandModel {
     }
 }
 
-extension HandModel: HandsML {
+extension HandModel: HandsMLProtocol {
     func getMLMultiArray() -> MLMultiArray? {
         do {
             let multiarray = try MLMultiArray(shape: [1, 3, 21], dataType: .double)

@@ -9,6 +9,17 @@ import AVFoundation
 import UIKit
 import SwiftUI
 
+enum CameraContainerError: LocalizedError {
+    case withoutCapture
+    
+    var errorDescription: String? {
+        switch self {
+        case .withoutCapture:
+            return "Sem câmera disponível"
+        }
+    }
+}
+
 struct CameraContainer: UIViewControllerRepresentable {
     let captureSession = AVCaptureSession()
     let delegate: AVCaptureVideoDataOutputSampleBufferDelegate
@@ -31,6 +42,7 @@ struct CameraContainer: UIViewControllerRepresentable {
             videoCaptureDevice.unlockForConfiguration()
           } catch {
               NSLog("An Error occurred: \(error.localizedDescription))")
+              print(CameraContainerError.withoutCapture)
           }
         captureSession.addInput(videoInput)
         
@@ -51,8 +63,9 @@ struct CameraContainer: UIViewControllerRepresentable {
         
         return viewController
     }
-    
+#if DEBUG
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         
     }
+#endif
 }

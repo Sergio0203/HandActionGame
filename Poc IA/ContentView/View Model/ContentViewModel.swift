@@ -43,9 +43,9 @@ final class ContentViewModel: NSObject, ObservableObject {
     var cameraContainer: CameraContainer?
     var arContainer: ARViewContainer?
     
-    let handsService: HandsDetector
+    let handsService: HandsDetectorProtocol
 
-    init(handsService: HandsDetector = HandsService()) {
+    init(handsService: HandsDetectorProtocol = HandsService()) {
         self.handsService = handsService
         super.init()
         arContainer = ARViewContainer(delegate: self)
@@ -61,7 +61,6 @@ final class ContentViewModel: NSObject, ObservableObject {
                 queue = Array(queue.suffix(queueSize))
                 sampleCounter += 1
                 if queueSize == queue.count && sampleCounter % sampleCount == 0  {
-                    print(frameCount)
                     guard let result = ClassifierService.shared.classifyAction(poses: queue) else { return }
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
@@ -95,11 +94,7 @@ final class ContentViewModel: NSObject, ObservableObject {
             self.points = points
         }
     }
-    
-    
-    
-    
-    
+
     func removePointsFromView(){
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -127,3 +122,4 @@ final class ContentViewModel: NSObject, ObservableObject {
         sendToIa(hands: hands)
     }
 }
+

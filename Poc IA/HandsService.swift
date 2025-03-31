@@ -8,7 +8,7 @@
 
 
 import Vision
-struct HandsService: HandsDetector {
+struct HandsService: HandsDetectorProtocol {
     
     func detectHands(in image: CVPixelBuffer, numberOfHands: Int) -> [HandModel] {
         var handsResult = [HandModel]()

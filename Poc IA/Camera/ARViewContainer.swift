@@ -29,8 +29,9 @@ struct ARViewContainer: UIViewRepresentable {
         
         return arView
     }
-    
+#if DEBUG
     func updateUIView(_ uiView: ARView, context: Context) {
     }
+#endif
 }
 
