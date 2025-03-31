@@ -12,11 +12,8 @@ import SwiftUI
 struct CameraContainer: UIViewControllerRepresentable {
     let captureSession = AVCaptureSession()
     let delegate: AVCaptureVideoDataOutputSampleBufferDelegate
-    let previewLayer: AVCaptureVideoPreviewLayer
     init(delegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
         self.delegate = delegate
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = .resizeAspectFill
     }
     
     func makeUIViewController(context: Context) -> UIViewController {
@@ -43,10 +40,9 @@ struct CameraContainer: UIViewControllerRepresentable {
             videoOutput.setSampleBufferDelegate(delegate, queue: DispatchQueue(label: "videoQueue"))
             captureSession.addOutput(videoOutput)
         }
-        
-        //previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.frame = viewController.view.bounds
-        previewLayer.videoGravity = .resizeAspect
+        previewLayer.videoGravity = .resize
         viewController.view.layer.addSublayer(previewLayer)
         
         Task {
