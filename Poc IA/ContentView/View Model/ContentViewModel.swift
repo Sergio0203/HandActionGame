@@ -1,30 +1,6 @@
-//
-//  ContentModelView.swift
-//  Poc IA
-//
-//  Created by Sérgio César Lira Júnior on 24/03/25.
-//
 import RealityKit
 import SwiftUI
 import ARKit
-
-public enum MovePrediction: String {
-    case left = "Left"
-    case right = "Right"
-    case up = "Up"
-    case down = "Down"
-    case none = "None"
-}
-
-public enum HandPrediction: String {
-    case open
-    case closed
-    case other
-}
-
-enum PreviewType {
-    case camera, ar
-}
 
 final class ContentViewModel: NSObject, ObservableObject {
     

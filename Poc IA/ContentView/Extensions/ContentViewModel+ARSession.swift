@@ -1,10 +1,3 @@
-//
-//  ARCoordinator.swift
-//  Poc IA
-//
-//  Created by Sérgio César Lira Júnior on 17/03/25.
-//
-
 import ARKit
 import RealityKit
 
@@ -20,4 +13,3 @@ extension ContentViewModel: ARSessionDelegate {
     }
     
 }
-

@@ -22,7 +22,8 @@ enum CameraContainerError: LocalizedError {
 
 struct CameraContainer: UIViewControllerRepresentable {
     let captureSession = AVCaptureSession()
-    let delegate: AVCaptureVideoDataOutputSampleBufferDelegate
+    weak var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
+   
     init(delegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
         self.delegate = delegate
     }

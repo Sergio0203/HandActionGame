@@ -13,7 +13,7 @@ import Foundation
 
 //provavelmente n vai mais ser usado pq n permite config de camera
 struct ARViewContainer: UIViewRepresentable {
-    var delegate: ARSessionDelegate
+    weak var delegate: ARSessionDelegate?
     var arView = ARView()
 
     init(delegate: ARSessionDelegate) {
