@@ -99,6 +99,7 @@ final class CameraManager: NSObject {
             addToPreviewStream = { ciImage in
                 if !self.isPreviewPaused {
                     continuation.yield(ciImage)
+                    
                 }
             }
         }
@@ -126,7 +127,7 @@ final class CameraManager: NSObject {
         var success = false
         
         captureSession.beginConfiguration()
-        captureSession.sessionPreset = .hd1920x1080
+        captureSession.sessionPreset = .hd4K3840x2160
         defer {
             captureSession.commitConfiguration()
             completionHandler(success)
@@ -140,7 +141,7 @@ final class CameraManager: NSObject {
         
         let photoOutput = AVCapturePhotoOutput()
         captureSession.sessionPreset = .photo
-        
+
         let videoOutput = AVCaptureVideoDataOutput()
         videoOutput.setSampleBufferDelegate(delegate, queue: DispatchQueue(label: "VideoDataOutputQueue"))
     
@@ -164,7 +165,6 @@ final class CameraManager: NSObject {
         self.deviceInput = deviceInput
         self.photoOutput = photoOutput
         self.videoOutput = videoOutput
-        
         photoOutput.maxPhotoQualityPrioritization = .quality
         updateVideoOutputConnection()
         isCaptureSessionConfigured = true

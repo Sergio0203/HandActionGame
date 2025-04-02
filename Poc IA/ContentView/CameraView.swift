@@ -17,10 +17,7 @@ struct CameraView: View {
                 if let image = image {
                     Image(decorative: image, scale: 1)
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: geometryProxy.size.width,
-                               height: geometryProxy.size.height)
-                        .border(.red, width: 2)
+                        //.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
                 } else {
                     ContentUnavailableView("No camera feed", systemImage: "xmark.circle.fill")
                         .frame(width: geometryProxy.size.width,
